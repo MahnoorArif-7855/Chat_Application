@@ -40,8 +40,8 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (message, callback) => {
         const user = getUser(socket.id);
         // io.to is used here to specify room name and id and then emit the event
-        io.to(user).emit('message', { user: user.name, text: message });
-        io.to(user.room).emit('roomData', { user: user.room, user: getUserInRoom(user.room)});
+        io.to(user.room).emit('message', { user: user.name, text: message });
+        
 
         callback();
 
@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
 
         if(user){
             io.to(user.room).emit('message', {user: "admin", text: `${user.name} has left,`})
+            io.to(user.room).emit('roomData', { user: user.room, user: getUserInRoom(user.room)});
         }
     })
 });
